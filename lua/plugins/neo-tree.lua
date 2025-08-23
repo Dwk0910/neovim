@@ -23,7 +23,7 @@ return {
 							ignored = "",
 							unstaged = "",
 							staged = "",
-							conflict = "",
+							conflict = "",
 						},
 					},
 				},
