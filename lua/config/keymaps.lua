@@ -9,9 +9,6 @@ mapKey("<M-l>", "<C-w>l") -- right
 mapKey("<M-j>", "<C-w>j") -- Down
 mapKey("<M-k>", "<C-w>k") -- Up
 
--- Neotree toggle
-mapKey("<leader>e", ":Neotree toggle<cr>")
-
 -- indent
 mapKey("<", "<gv", "v")
 mapKey(">", ">gv", "v")
