@@ -41,7 +41,23 @@ return {
 					enable = true,
 					frequency = 7,
 				},
-				diagnostic_signs = false,
+				symbol_in_winbar = {
+					enable = true,
+				},
+				lightbulb = {
+					enable = true,
+					sign = true,
+					debounce = 10,
+				},
+				beacon = {
+					enable = true,
+				},
+				inlay_hint = {
+					enable = true,
+					separator = "  ",
+					hightlight = "Comment",
+				},
+				diagnostic_signs = true,
 				horver_handler = "lspsaga",
 				signature_help_handler = "lspsaga",
 			})
