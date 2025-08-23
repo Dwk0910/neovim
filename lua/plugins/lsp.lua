@@ -17,16 +17,40 @@ return {
 	},
 	{
 		"neovim/nvim-lspconfig",
+		config = function() end,
+	},
+	{
+		"nvimdev/lspsaga.nvim",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-tree/nvim-web-devicons",
+		},
 		config = function()
-			local lspconfig = require("lspconfig")
-			lspconfig.lua_ls.setup({})
-			lspconfig.jdtls.setup({})
-			lspconfig.jsonls.setup({})
-			lspconfig.eslint.setup({})
+			require("lspsaga").setup({
+				ui = {
+					lines = { "┗", "┣", "┃", "━", "┏" },
+					border = "single",
+					code_action = "💡",
+					action_fix = " ",
+					devicon = true,
+					title = true,
+					expand = "⊞",
+					collapse = "⊟",
+					kind = {},
+					imp_sign = "󰳛 ",
+					enable = true,
+					frequency = 7,
+				},
+				diagnostic_signs = false,
+				horver_handler = "lspsaga",
+				signature_help_handler = "lspsaga",
+			})
 
-			KeyMapper("K", vim.lsp.buf.hover)
-			KeyMapper("gd", vim.lsp.buf.definition)
-			KeyMapper("<leader><CR>", vim.lsp.buf.code_action)
+			KeyMapper("H", "<cmd>Lspsaga hover_doc<CR>")
+			KeyMapper("K", "<cmd>Lspsaga show_line_diagnostics<CR>")
+			KeyMapper("<leader>gd", "<cmd>Lspsaga peek_definition<CR>")
+			KeyMapper("<leader>ca", "<cmd>Lspsaga code_action<CR>")
+			KeyMapper("<leader>rn", "<cmd>Lspsaga rename<CR>")
 		end,
 	},
 }
