@@ -8,26 +8,13 @@ return {
 			"nvim-tree/nvim-web-devicons", -- optional, but recommended
 		},
 		lazy = false, -- neo-tree will lazily load itself
-		opts = {
-			window = {
-				float = {
-					enable = true,
-					position = "center",
-					border = "rounded",
-				},
-			},
-		},
 		config = function()
 			require("neo-tree").setup({
+				source_selector = {
+					winbar = false,
+					statusline = false,
+				},
 				default_component_configs = {
-					indent = {
-						padding = 1,
-						indent_size = 2,
-						with_markers = true,
-						indent_marker = "│",
-						last_indent_marker = "└",
-						highlight = "NeoTreeIndentMarker",
-					},
 					git_status = {
 						symbols = {
 							added = "",
@@ -43,8 +30,7 @@ return {
 					},
 				},
 				filesystem = {
-					auto_open = false,
-					follow_current_file = true,
+					follow_current_file = { enabled = true },
 					filtered_items = {
 						visible = true,
 						hide_dotfiles = false,
