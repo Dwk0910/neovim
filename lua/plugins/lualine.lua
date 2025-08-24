@@ -10,17 +10,17 @@ return {
         -- Color table for highlights
         -- stylua: ignore
         local colors = {
-          bg       = '#202328',
-          fg       = '#bbc2cf',
-          yellow   = '#ECBE7B',
-          cyan     = '#008080',
-          darkblue = '#081633',
-          green    = '#98be65',
-          orange   = '#FF8800',
-          violet   = '#a9a1e1',
-          magenta  = '#c678dd',
-          blue     = '#51afef',
-          red      = '#ec5f67',
+            bg       = '#202328',
+            fg       = '#bbc2cf',
+            yellow   = '#ECBE7B',
+            cyan     = '#008080',
+            darkblue = '#081633',
+            green    = '#98be65',
+            orange   = '#FF8800',
+            violet   = '#a9a1e1',
+            magenta  = '#c678dd',
+            blue     = '#51afef',
+            red      = '#ec5f67',
         }
 
 		local conditions = {
@@ -101,13 +101,12 @@ return {
 					n = colors.red,
 					i = colors.green,
 					v = colors.blue,
-					[""] = colors.blue,
 					V = colors.blue,
+					["\22"] = colors.blue, -- Visual Block
 					c = colors.magenta,
 					no = colors.red,
 					s = colors.orange,
 					S = colors.orange,
-					[""] = colors.orange,
 					ic = colors.yellow,
 					R = colors.violet,
 					Rv = colors.violet,
@@ -118,8 +117,12 @@ return {
 					["r?"] = colors.cyan,
 					["!"] = colors.red,
 					t = colors.red,
+					-- fallback
+					[""] = colors.blue,
 				}
-				return { fg = mode_color[vim.fn.mode()] }
+
+				-- 현재 모드 색 가져오기
+				return { fg = mode_color[vim.fn.mode()] or colors.blue }
 			end,
 			padding = { right = 1 },
 		})
@@ -164,12 +167,13 @@ return {
 			function()
 				local msg = "No Active Lsp"
 				local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
-				local clients = vim.lsp.get_clients()
+				local clients = vim.lsp.get_clients({ bufnr = 0 })
 				if next(clients) == nil then
 					return msg
 				end
 				for _, client in ipairs(clients) do
-					local filetypes = client.config.filetypes
+					---@diagnostic disable-next-line: undefined-field
+					local filetypes = client.config and client.config.filetypes
 					if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
 						return client.name
 					end
