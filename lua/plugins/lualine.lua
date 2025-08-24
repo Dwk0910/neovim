@@ -2,27 +2,26 @@ return {
 	"nvim-lualine/lualine.nvim",
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	config = function()
-		-- Eviline config for lualine
-		-- Author: shadmansaleh
-		-- Credit: glepnir
+		-- Everforest Optimized Lualine for React/Tailwind with full language icons + time
 		local lualine = require("lualine")
 
-        -- Color table for highlights
-        -- stylua: ignore
-        local colors = {
-            bg       = '#202328',
-            fg       = '#bbc2cf',
-            yellow   = '#ECBE7B',
-            cyan     = '#008080',
-            darkblue = '#081633',
-            green    = '#98be65',
-            orange   = '#FF8800',
-            violet   = '#a9a1e1',
-            magenta  = '#c678dd',
-            blue     = '#51afef',
-            red      = '#ec5f67',
-        }
+		-- Colors
+		local colors = {
+			bg = "#2b3330",
+			fg = "#d3cfc9",
+			yellow = "#d0a86b",
+			cyan = "#7fb4ca",
+			darkblue = "#081633",
+			green = "#8fb28f",
+			orange = "#FF8800",
+			violet = "#a9a1e1",
+			magenta = "#c678dd",
+			blue = "#51afef",
+			red = "#d08b8b",
+			gray = "#6a7268",
+		}
 
+		-- Conditions
 		local conditions = {
 			buffer_not_empty = function()
 				return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
@@ -30,119 +29,150 @@ return {
 			hide_in_width = function()
 				return vim.fn.winwidth(0) > 80
 			end,
-			check_git_workspace = function()
-				local filepath = vim.fn.expand("%:p:h")
-				local gitdir = vim.fn.finddir(".git", filepath .. ";")
-				return gitdir and #gitdir > 0 and #gitdir < #filepath
-			end,
 		}
 
 		-- Config
 		local config = {
 			options = {
-				-- Disable sections and component separators
 				component_separators = "",
 				section_separators = "",
 				theme = {
-					-- We are going to use lualine_c an lualine_x as left and
-					-- right section. Both are highlighted by c theme .  So we
-					-- are just setting default looks o statusline
 					normal = { c = { fg = colors.fg, bg = colors.bg } },
 					inactive = { c = { fg = colors.fg, bg = colors.bg } },
 				},
+				globalstatus = true,
 			},
 			sections = {
-				-- these are to remove the defaults
 				lualine_a = {},
 				lualine_b = {},
-				lualine_y = {},
-				lualine_z = {},
-				-- These will be filled later
 				lualine_c = {},
 				lualine_x = {},
+				lualine_y = {},
+				lualine_z = {},
 			},
 			inactive_sections = {
-				-- these are to remove the defaults
 				lualine_a = {},
 				lualine_b = {},
+				lualine_c = { "filename" },
+				lualine_x = { "location" },
 				lualine_y = {},
 				lualine_z = {},
-				lualine_c = {},
-				lualine_x = {},
 			},
 		}
 
-		-- Inserts a component in lualine_c at left section
-		local function ins_left(component)
-			table.insert(config.sections.lualine_c, component)
+		-- Utility
+		local function ins_left(comp)
+			table.insert(config.sections.lualine_c, comp)
+		end
+		local function ins_right(comp)
+			table.insert(config.sections.lualine_x, comp)
 		end
 
-		-- Inserts a component in lualine_x at right section
-		local function ins_right(component)
-			table.insert(config.sections.lualine_x, component)
-		end
-
+		-- Decorative left block
 		ins_left({
 			function()
 				return "▊"
 			end,
-			color = { fg = colors.blue }, -- Sets highlighting of component
-			padding = { left = 0, right = 1 }, -- We don't need space before this
+			color = { fg = colors.blue },
+			padding = { left = 0, right = 1 },
 		})
 
+		-- Mode pill with text
 		ins_left({
-			-- mode component
 			function()
-				return ""
+				local modes = {
+					n = "NORMAL",
+					i = "INSERT",
+					v = "VISUAL",
+					V = "V-LINE",
+					c = "COMMAND",
+					s = "SELECT",
+					R = "REPLACE",
+					t = "TERMINAL",
+				}
+				local m = vim.fn.mode()
+				return " " .. (modes[m] or m) .. " "
 			end,
 			color = function()
-				-- auto change color according to neovims mode
 				local mode_color = {
 					n = colors.red,
 					i = colors.green,
 					v = colors.blue,
 					V = colors.blue,
-					["\22"] = colors.blue, -- Visual Block
 					c = colors.magenta,
-					no = colors.red,
 					s = colors.orange,
-					S = colors.orange,
-					ic = colors.yellow,
 					R = colors.violet,
-					Rv = colors.violet,
-					cv = colors.red,
-					ce = colors.red,
-					r = colors.cyan,
-					rm = colors.cyan,
-					["r?"] = colors.cyan,
-					["!"] = colors.red,
 					t = colors.red,
-					-- fallback
-					[""] = colors.blue,
 				}
-
-				-- 현재 모드 색 가져오기
-				return { fg = mode_color[vim.fn.mode()] or colors.blue }
+				return { fg = colors.bg, bg = mode_color[vim.fn.mode()] or colors.gray, gui = "bold" }
 			end,
-			padding = { right = 1 },
+			separator = { left = "", right = "" },
+			padding = 0,
 		})
 
-		ins_left({
-			-- filesize component
-			"filesize",
-			cond = conditions.buffer_not_empty,
-		})
+		-- File size
+		ins_left({ "filesize", cond = conditions.buffer_not_empty })
 
+		-- Full language icons
+		local icons = {
+			-- Web / JS / TS
+			javascript = "",
+			typescript = "",
+			tsx = "",
+			javascriptreact = "",
+			typescriptreact = "",
+			react = "",
+			html = "",
+			css = "",
+			scss = "",
+			vue = "󰡄",
+			svelte = "",
+			angular = "",
+			-- Backend / scripts
+			lua = "",
+			python = "",
+			ruby = "",
+			go = "",
+			rust = "",
+			php = "",
+			java = "",
+			kotlin = "",
+			c = "",
+			cpp = "",
+			cs = "",
+			-- Config / markup
+			json = "",
+			yaml = "",
+			toml = "",
+			xml = "󰗀",
+			markdown = "",
+			dockerfile = "",
+			gitignore = "",
+			gitattributes = "",
+			default = "",
+		}
+
+		-- Filename with icon
 		ins_left({
-			"filename",
+			function()
+				local ft = vim.bo.filetype
+				local icon = icons[ft] or icons.default
+				local filename = vim.fn.expand("%:t")
+				local max_len = 15 -- 상태줄에서 최대 표시 길이
+				if #filename > max_len then
+					filename = filename:sub(1, max_len - 3) .. "..." -- 뒤를 …로
+				end
+				return string.format(" %s %s ", icon, filename)
+			end,
 			cond = conditions.buffer_not_empty,
 			color = { fg = colors.magenta, gui = "bold" },
 		})
 
+		-- Cursor location & progress
 		ins_left({ "location" })
-
 		ins_left({ "progress", color = { fg = colors.fg, gui = "bold" } })
 
+		-- Diagnostics
 		ins_left({
 			"diagnostics",
 			sources = { "nvim_diagnostic" },
@@ -154,60 +184,45 @@ return {
 			},
 		})
 
-		-- Insert mid section. You can make any number of sections in neovim :)
-		-- for lualine it's any number greater then 2
+		-- Spacer/mid
 		ins_left({
 			function()
 				return "%="
 			end,
 		})
 
+		-- Middle: safe 12-hour time
 		ins_left({
-			-- Lsp server name .
 			function()
-				local msg = "No Active Lsp"
-				local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
-				local clients = vim.lsp.get_clients({ bufnr = 0 })
-				if next(clients) == nil then
-					return msg
+				local hour24 = tonumber(os.date("%H")) -- 0~23
+				local minute = tonumber(os.date("%M"))
+				local ampm = hour24 >= 12 and "PM" or "AM"
+				local hour12 = hour24 % 12
+				if hour12 == 0 then
+					hour12 = 12
 				end
-				for _, client in ipairs(clients) do
-					---@diagnostic disable-next-line: undefined-field
-					local filetypes = client.config and client.config.filetypes
-					if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-						return client.name
-					end
-				end
-				return msg
+				return string.format("%02d:%02d %s", hour12, minute, ampm)
 			end,
-			icon = " LSP:",
-			color = { fg = "#ffffff", gui = "bold" },
+			color = { fg = colors.cyan, gui = "bold" },
+			padding = { left = 1, right = 1 },
 		})
 
-		-- Add components to right sections
+		-- Right section
 		ins_right({
-			"o:encoding", -- option component same as &encoding in viml
-			fmt = string.upper, -- I'm not sure why it's upper case either ;)
+			"o:encoding",
+			fmt = string.upper,
 			cond = conditions.hide_in_width,
 			color = { fg = colors.green, gui = "bold" },
 		})
-
 		ins_right({
 			"fileformat",
 			fmt = string.upper,
-			icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
+			icons_enabled = false,
 			color = { fg = colors.green, gui = "bold" },
 		})
-
-		ins_right({
-			"branch",
-			icon = "",
-			color = { fg = colors.violet, gui = "bold" },
-		})
-
+		ins_right({ "branch", icon = "", color = { fg = colors.violet, gui = "bold" } })
 		ins_right({
 			"diff",
-			-- Is it me or the symbol for modified us really weird
 			symbols = { added = " ", modified = "󰝤 ", removed = " " },
 			diff_color = {
 				added = { fg = colors.green },
@@ -217,6 +232,7 @@ return {
 			cond = conditions.hide_in_width,
 		})
 
+		-- Decorative right block
 		ins_right({
 			function()
 				return "▊"
@@ -225,7 +241,7 @@ return {
 			padding = { left = 1 },
 		})
 
-		-- Now don't forget to initialize lualine
+		-- Initialize
 		lualine.setup(config)
 	end,
 }

@@ -153,6 +153,40 @@ return {
 	-- Snippets
 	{ "L3MON4D3/LuaSnip", event = "InsertEnter" },
 
+	-- lspkind
+	{
+		"onsails/lspkind.nvim",
+		config = function()
+			require("lspkind").init({
+				mode = "symbol_text",
+				preset = "default",
+				symbol_map = {
+					Text = "",
+					Method = "ƒ",
+					Function = "",
+					Constructor = "",
+					Field = "",
+					Variable = "𝓍",
+					Class = "",
+					Interface = "",
+					Module = "",
+					Property = "",
+					Unit = "",
+					Value = "",
+					Enum = "了",
+					Keyword = "⚡",
+					Snippet = "",
+					Color = "",
+					File = "",
+					Folder = "",
+					EnumMember = "",
+					Constant = "",
+					Struct = "",
+				},
+			})
+		end,
+	},
+
 	-- Styler
 	{
 		"nvimdev/lspsaga.nvim",

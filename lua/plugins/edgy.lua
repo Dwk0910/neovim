@@ -10,7 +10,7 @@ return {
 			animate = { enabled = true },
 			left = { -- left-sidebar
 				{
-					title = "File Explorer",
+					title = "FILE EXPLORER",
 					ft = "neo-tree",
 					size = { width = 30 },
 					pinned = true,

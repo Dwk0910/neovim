@@ -18,6 +18,25 @@ return {
 		config = function()
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
+
+			local lspkind = require("lspkind")
+			local tailwind_colorizer = require("tailwindcss-colorizer-cmp")
+			local combined_formatter = function(entry, vim_item)
+				-- 1️⃣ Tailwind 색상 먼저 처리
+				vim_item = tailwind_colorizer.formatter(entry, vim_item)
+				-- 2️⃣ lspkind 아이콘 추가
+				vim_item = lspkind.cmp_format({
+					mode = "symbol_text",
+					menu = {
+						nvim_lsp = "[LSP]",
+						buffer = "[Buffer]",
+						luasnip = "[LuaSnip]",
+					},
+				})(entry, vim_item)
+
+				return vim_item
+			end
+
 			cmp.setup({
 				snippet = {
 					expand = function(args)
@@ -25,15 +44,7 @@ return {
 					end,
 				},
 				formatting = {
-					format = require("lspkind").cmp_format({
-						mode = "symbol_text",
-						menu = {
-							nvim_lsp = "[LSP]",
-							buffer = "[Buffer]",
-							latex_symbols = "[Latex]",
-							luasnip = "[LuaSnip]",
-						},
-					}),
+					format = combined_formatter,
 				},
 				window = {
 					completion = cmp.config.window.bordered(),
@@ -72,6 +83,7 @@ return {
 						end
 					end, { "i", "s" }),
 				}),
+
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
