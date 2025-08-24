@@ -44,18 +44,39 @@ require("lazy").setup({
 	checker = { enabled = true, notify = true },
 })
 
+-- Commands in `nvim_create_autocmd()` runs automatically when they are loaded.
+vim.api.nvim_create_autocmd("DiagnosticChanged", {
+	pattern = "*",
+	callback = function(args)
+		-- Prepare for handle trouble window open
+		local diagnostics = vim.diagnostic.get(args.buf)
+		local has_errors = false
+
+		for _, d in ipairs(diagnostics) do
+			if d.severity == vim.diagnostic.severity.ERROR or d.severity == vim.diagnostic.severity.WARN then
+				has_errors = true
+				break
+			end
+		end
+
+		if has_errors then
+			vim.cmd("Trouble diagnostics open")
+		end
+	end,
+})
+
 -- virtual_text & other warning/comment settings
 -- set virtualtext color
 vim.cmd([[
   highlight DiagnosticVirtualTextError guifg=#FF6E6E guibg=#3E1F1F
   highlight DiagnosticVirtualTextWarn  guifg=#FFD55F guibg=#3E3A1F
   highlight DiagnosticVirtualTextInfo  guifg=#6EAFFF guibg=NONE
-  highlight DiagnosticVirtualTextHint  guifg=#AAAAAA guibg=NONE
+  highlight DiagnosticVirtualTextHint  guifg=#537199 guibg=NONE
 ]])
 vim.diagnostic.config({
 	virtual_text = {
 		prefix = " ",
-		spacing = 4,
+		spacing = 3,
 		source = false,
 		format = function(diagnostic)
 			return diagnostic.message .. " "
@@ -82,9 +103,6 @@ vim.diagnostic.config({
 	},
 })
 
--- Welcome Message
-require("notify")("  Welcome!", "info", { title = "Set-up completed" })
-
 vim.o.updatetime = 300
 vim.cmd([[
     augroup ShowDiagnosticsOnHover
@@ -92,3 +110,6 @@ vim.cmd([[
         autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
     augroup END
 ]])
+
+-- Welcome Message
+require("notify")("  Welcome!", "info", { title = "Set-up completed" })
