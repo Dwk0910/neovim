@@ -15,7 +15,7 @@ return {
 					return not ok
 				end,
 			},
-			indent = { enable = true },
+			indent = { enable = false },
 		})
 	end,
 }
