@@ -35,6 +35,7 @@ return {
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
+			"b0o/schemastore.nvim",
 		},
 
 		config = function()
@@ -136,6 +137,15 @@ return {
 						},
 
 						validate = true, -- LSP에서 검사/자동완성 켜기
+					},
+				},
+			})
+
+			lspconfig.jsonls.setup({
+				settings = {
+					json = {
+						schemas = require("schemastore").json.schemas(),
+						validate = { enable = true },
 					},
 				},
 			})

@@ -26,3 +26,6 @@ opt.scrolloff = 10
 opt.mouse:append("a")
 opt.laststatus = 3
 opt.splitkeep = "screen"
+opt.cursorline = true
+
+vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#9dcbaf" })
