@@ -8,6 +8,7 @@ return {
 		config = function()
 			local builtin = require("telescope.builtin")
 			mapKey("<C-F>", builtin.live_grep)
+			mapKey("<leader>ff", builtin.find_files)
 		end,
 	},
 	{
