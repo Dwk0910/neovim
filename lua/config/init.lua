@@ -26,6 +26,18 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+-- Settings for clipboard to use system clipboard
+
+local has = function(x)
+	return vim.fn.has(x) == 1
+end
+
+if has("win32") then
+	vim.opt.clipboard:prepend({ "unnamed", "unnamedplus" })
+elseif has("macunix") then
+	vim.opt.clipboard:append({ "unnamedplus" })
+end
+
 -- Import configs
 require("config.globals")
 require("config.keymaps")
