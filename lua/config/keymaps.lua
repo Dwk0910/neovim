@@ -12,3 +12,22 @@ mapKey("<M-k>", "<C-w>k") -- Up
 -- indent
 mapKey("<", "<gv", "v")
 mapKey(">", ">gv", "v")
+
+-- Key mappings
+mapKey("H", "<cmd>Lspsaga hover_doc<CR>")
+mapKey("K", "<cmd>Lspsaga show_line_diagnostics<CR>")
+mapKey("<leader>gd", "<cmd>Lspsaga peek_definition<CR>")
+mapKey("<leader>ca", "<cmd>Lspsaga code_action<CR>")
+mapKey("<leader>rn", "<cmd>Lspsaga rename<CR>")
+
+-- vim.api.nvim_create_autocmd("LspAttach", {
+--     group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+--     callback = function(ev)
+--         local map = vim.keymap.set
+--         local opts = { buffer = ev.buf }
+--         map('n', '<leader>gd', vim.lsp.buf.definition, opts)
+--         map('n', '<leader>rn', vim.lsp.buf.rename, opts)
+--         map('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+--         map('n', 'H', vim.lsp.buf.hover, opts)
+--     end
+-- })
