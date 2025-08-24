@@ -45,10 +45,40 @@ require("lazy").setup({
 })
 
 -- Commands in `nvim_create_autocmd()` runs automatically when they are loaded.
-vim.api.nvim_create_autocmd("DiagnosticChanged", {
-	pattern = "*",
+vim.api.nvim_create_autocmd("VimEnter", {
+	callback = function(_)
+		if vim.fn.argc() == 0 then
+			vim.cmd([[Neotree toggle]])
+			vim.cmd([[wincmd p]])
+		end
+
+		local args = vim.fn.argv()
+		local bufnr = vim.fn.bufnr("neo-tree")
+		if #args > 0 then
+			local target = args[1]
+			if vim.fn.isdirectory(target) ~= 1 then
+				if bufnr == -1 then
+					vim.cmd([[Neotree toggle]])
+				end
+			end
+		end
+	end,
+})
+
+-- This command allows to move cursor to the last edit position when opening a file
+vim.api.nvim_create_autocmd("BufReadPost", {
+	callback = function()
+		local mark = vim.api.nvim_buf_get_mark(0, '"')
+		local lcount = vim.api.nvim_buf_line_count(0)
+		if mark[1] > 0 and mark[1] <= lcount then
+			pcall(vim.api.nvim_win_set_cursor, 0, mark)
+		end
+	end,
+})
+
+-- This allows to open `Trouble diagnostics` buffer automatically when current buffer has ERROR or WARN
+vim.api.nvim_create_autocmd("BufWritePost", {
 	callback = function(args)
-		-- Prepare for handle trouble window open
 		local diagnostics = vim.diagnostic.get(args.buf)
 		local has_errors = false
 
@@ -60,7 +90,10 @@ vim.api.nvim_create_autocmd("DiagnosticChanged", {
 		end
 
 		if has_errors then
-			vim.cmd("Trouble diagnostics open")
+			local ok, trouble = pcall(require, "trouble")
+			if ok and not trouble.is_open() then
+				vim.cmd("Trouble diagnostics open")
+			end
 		end
 	end,
 })
@@ -112,4 +145,4 @@ vim.cmd([[
 ]])
 
 -- Welcome Message
-require("notify")("  Welcome!", "info", { title = "Set-up completed" })
+require("notify")(" Welcome! ", "info", { title = "Set-up completed" })
