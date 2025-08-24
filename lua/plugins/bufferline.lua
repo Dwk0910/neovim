@@ -11,9 +11,26 @@ return {
 				mode = "buffers",
 				style_preset = bufferline.style_preset.default,
 				separator_style = "slope",
-				diagnostics_indicator = function(count, _, _, _)
-					return "(" .. count .. ")"
+				diagnostics_indicator = function(_, _, diagnostics_dict, _)
+					local icon = ""
+					if diagnostics_dict.Error then
+						icon = ""
+					elseif diagnostics_dict.Warn then
+						icon = ""
+					end
+					return " " .. icon .. " "
 				end,
+				offsets = {
+					{
+						filetype = "NvimTree",
+						text = "File Explorer",
+						separator = true,
+						highlight = "Directory",
+					},
+				},
+				show_buffer_close_icon = true,
+				show_close_icon = true,
+				mouse_mode = "drag-and-drop",
 			},
 		})
 

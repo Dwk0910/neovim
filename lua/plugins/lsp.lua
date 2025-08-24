@@ -83,6 +83,13 @@ return {
 		event = "LspAttach",
 		config = function()
 			require("lspsaga").setup({
+				codeaction = {
+					options = {
+						winblend = 0,
+						border = "rounded",
+					},
+				},
+
 				ui = {
 					lines = { "┗", "┣", "┃", "━", "┏" },
 					border = "single",

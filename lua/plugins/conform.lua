@@ -4,6 +4,7 @@ return {
 	config = function()
 		local conform = require("conform")
 		conform.setup({
+			notify_on_error = false,
 			formatters_by_ft = {
 				lua = { "stylua" },
 				javascript = { "eslint_d", "prettierd" },

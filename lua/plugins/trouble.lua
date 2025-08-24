@@ -4,7 +4,11 @@ return {
 	cmd = "Trouble",
 	config = function()
 		require("trouble").setup({
-			auto_open = true,
+			mods = {
+				diagnostics = {
+					filter = { severity = vim.diagnostic.severity.WARN },
+				},
+			},
 			auto_close = true,
 		})
 	end,
