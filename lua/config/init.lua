@@ -2,6 +2,7 @@ vim.env.PATH = vim.env.PATH .. ";C:\\tools\\ripgrep\\bin"
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+---@diagnostic disable-next-line: undefined-field
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
 	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
@@ -29,7 +30,6 @@ vim.g.maplocalleader = "\\"
 require("config.globals")
 require("config.keymaps")
 require("config.options")
-require("config.commands")
 
 -- Setup lazy.nvim
 require("lazy").setup({
@@ -45,12 +45,21 @@ require("lazy").setup({
 })
 
 -- virtual_text & other warning/comment settings
-vim.api.nvim_set_hl(0, "LspDiagnosticsDefaultWarning", { fg = "#FFFFFF" })
+-- set virtualtext color
+vim.cmd([[
+  highlight DiagnosticVirtualTextError guifg=#FF6E6E guibg=#3E1F1F
+  highlight DiagnosticVirtualTextWarn  guifg=#FFD55F guibg=#3E3A1F
+  highlight DiagnosticVirtualTextInfo  guifg=#6EAFFF guibg=NONE
+  highlight DiagnosticVirtualTextHint  guifg=#AAAAAA guibg=NONE
+]])
 vim.diagnostic.config({
 	virtual_text = {
-		prefix = "",
+		prefix = " ",
 		spacing = 4,
 		source = false,
+		format = function(diagnostic)
+			return diagnostic.message .. " "
+		end,
 	},
 	underline = true,
 	update_in_insert = false,

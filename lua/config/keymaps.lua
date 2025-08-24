@@ -20,6 +20,9 @@ mapKey("<leader>gd", "<cmd>Lspsaga peek_definition<CR>")
 mapKey("<leader>ca", "<cmd>Lspsaga code_action<CR>")
 mapKey("<leader>rn", "<cmd>Lspsaga rename<CR>")
 
+mapKey("F", ":bd<CR>")
+mapKey("<C-X>", ":bd!<CR>")
+
 -- vim.api.nvim_create_autocmd("LspAttach", {
 --     group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 --     callback = function(ev)
