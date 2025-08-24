@@ -110,6 +110,14 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 	end,
 })
 
+-- This allows to detect markdown files that named with `*.md` or `*.markdown` and set filetype to `markdown`
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = { "*.md", "*.markdown" },
+	callback = function()
+		vim.bo.filetype = "markdown"
+	end,
+})
+
 -- virtual_text & other warning/comment settings
 -- set virtualtext color
 vim.cmd([[

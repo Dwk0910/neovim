@@ -149,6 +149,8 @@ return {
 					},
 				},
 			})
+
+			lspconfig.marksman.setup({})
 		end,
 	},
 
