@@ -1,5 +1,3 @@
-local mapKey = require("utils.KeyMapper").mapKey
-
 return {
 	{
 		"nvim-neo-tree/neo-tree.nvim",
@@ -54,8 +52,6 @@ return {
 					},
 				},
 			})
-
-			mapKey("<leader>e", ":Neotree float toggle<CR>", "n", { silent = true })
 		end,
 	},
 }

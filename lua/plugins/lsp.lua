@@ -1,8 +1,22 @@
-local KeyMapper = require("utils.KeyMapper").mapKey
-
 return {
+	-- Utility
+	{
+		"nvim-lua/plenary.nvim",
+		lazy = true,
+	},
+
+	-- LSP
 	{
 		"williamboman/mason.nvim",
+		opts = {
+			ui = {
+				icons = {
+					package_installed = "✓",
+					package_pending = "➜",
+					package_uninstalled = "✗",
+				},
+			},
+		},
 		config = function()
 			require("mason").setup()
 		end,
@@ -11,20 +25,62 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "jdtls", "jsonls", "eslint" },
+				ensure_installed = { "ts_ls", "lua_ls" },
+				automatic_enable = false,
 			})
 		end,
 	},
 	{
 		"neovim/nvim-lspconfig",
-		config = function() end,
+		dependencies = {
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+		},
+
+		config = function()
+			local lspconfig = require("lspconfig")
+			lspconfig.lua_ls.setup({
+				settings = {
+					Lua = {
+						runtime = {
+							version = "LuaJIT",
+							path = vim.fn.split(package.path, ";"),
+						},
+						workspace = {
+							checkThirdParty = false,
+							library = {
+								[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+								[vim.fn.stdpath("data") .. "lazy/lazy.nvim"] = true,
+							},
+						},
+						diagnostics = {
+							globals = { "vim" },
+						},
+					},
+				},
+			})
+		end,
 	},
+
+	-- Style
+	-- Auto Completion
+	{ "hrsh7th/nvim-cmp", event = "InsertEnter" },
+	{ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
+	{ "hrsh7th/cmp-buffer", after = "nvim-cmp" },
+	{ "hrsh7th/cmp-path", after = "nvim-cmp" },
+	{ "saadparwaiz1/cmp_luasnip", after = "nvim-cmp" },
+
+	-- Snippets
+	{ "L3MON4D3/LuaSnip", event = "InsertEnter" },
+
+	-- Styler
 	{
 		"nvimdev/lspsaga.nvim",
 		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
 			"nvim-tree/nvim-web-devicons",
+			"nvim-treesitter/nvim-treesitter",
 		},
+		event = "LspAttach",
 		config = function()
 			require("lspsaga").setup({
 				ui = {
@@ -41,9 +97,9 @@ return {
 					enable = true,
 					frequency = 7,
 				},
-				symbol_in_winbar = {
-					enable = true,
-				},
+				-- symbols_in_winbar = {
+				-- 	enable = true,
+				-- },
 				lightbulb = {
 					enable = true,
 					sign = true,
@@ -55,18 +111,11 @@ return {
 				inlay_hint = {
 					enable = true,
 					separator = "  ",
-					hightlight = "Comment",
 				},
 				diagnostic_signs = true,
-				horver_handler = "lspsaga",
+				hover_handler = "lspsaga",
 				signature_help_handler = "lspsaga",
 			})
-
-			KeyMapper("H", "<cmd>Lspsaga hover_doc<CR>")
-			KeyMapper("K", "<cmd>Lspsaga show_line_diagnostics<CR>")
-			KeyMapper("<leader>gd", "<cmd>Lspsaga peek_definition<CR>")
-			KeyMapper("<leader>ca", "<cmd>Lspsaga code_action<CR>")
-			KeyMapper("<leader>rn", "<cmd>Lspsaga rename<CR>")
 		end,
 	},
 }

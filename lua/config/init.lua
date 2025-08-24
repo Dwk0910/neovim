@@ -29,6 +29,7 @@ vim.g.maplocalleader = "\\"
 require("config.globals")
 require("config.keymaps")
 require("config.options")
+require("config.commands")
 
 -- Setup lazy.nvim
 require("lazy").setup({
@@ -43,7 +44,8 @@ require("lazy").setup({
 	checker = { enabled = true, notify = true },
 })
 
--- virtual_text
+-- virtual_text & other warning/comment settings
+vim.api.nvim_set_hl(0, "LspDiagnosticsDefaultWarning", { fg = "#FFFFFF" })
 vim.diagnostic.config({
 	virtual_text = {
 		prefix = "",
@@ -71,6 +73,9 @@ vim.diagnostic.config({
 	},
 })
 
+-- Welcome Message
+require("notify")("  Welcome!", "info", { title = "Set-up completed" })
+
 vim.o.updatetime = 300
 vim.cmd([[
     augroup ShowDiagnosticsOnHover
@@ -78,5 +83,3 @@ vim.cmd([[
         autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
     augroup END
 ]])
-
-vim.api.nvim_set_hl(0, "DiagnosticVirtualTextHint", { link = "Comment" })
