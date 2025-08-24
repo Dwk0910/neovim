@@ -39,6 +39,8 @@ return {
 
 		config = function()
 			local lspconfig = require("lspconfig")
+
+			-- Luascript LSP Configuration
 			lspconfig.lua_ls.setup({
 				settings = {
 					Lua = {
@@ -56,6 +58,84 @@ return {
 						diagnostics = {
 							globals = { "vim" },
 						},
+					},
+				},
+			})
+
+			-- Configurations for react development
+			lspconfig.eslint.setup({
+				settings = {
+					format = {
+						indentSize = vim.o.shiftwidth,
+						convertTabsToSpaces = vim.o.expandtab,
+						tabSize = vim.o.tabstop,
+					},
+				},
+			})
+
+			lspconfig.ts_ls.setup({
+				on_attach = function(client, _)
+					-- Disable tsserver formatting if eslint is available
+					local eslint = lspconfig.eslint
+					if eslint then
+						client.server_capabilities.documentFormattingProvider = false
+					end
+				end,
+				settings = {
+					typescript = {
+						format = {
+							indentSize = vim.o.shiftwidth,
+							convertTabsToSpaces = vim.o.expandtab,
+							tabSize = vim.o.tabstop,
+						},
+					},
+					javascript = {
+						format = {
+							indentSize = vim.o.shiftwidth,
+							convertTabsToSpaces = vim.o.expandtab,
+							tabSize = vim.o.tabstop,
+						},
+					},
+				},
+			})
+
+			lspconfig.tailwindcss.setup({
+				filetypes = {
+					"html",
+					"css",
+					"scss",
+					"javascript",
+					"javascriptreact",
+					"typescript",
+					"typescriptreact",
+					"vue",
+					"svelte",
+					"astro",
+				},
+				settings = {
+					tailwindCSS = {
+						-- 자동 완성 할 속성들
+						classAttributes = { "class", "className", "ngClass", "tw", "classnames" },
+
+						-- 다른 언어에서 tailwind를 쓰려면 매핑
+						includeLanguages = {
+							typescript = "javascript",
+							typescriptreact = "javascript",
+							svelte = "html",
+							rust = "html", -- 예시: Dioxus 등
+						},
+
+						-- 정규식으로 커스텀 클래스 위치 찾기 (예: tw`...`, class: "...", etc)
+						experimental = {
+							classRegex = {
+								'class[:=]\\s*"(.*?)"',
+								'className[:=]\\s*"(.*?)"',
+								"tw`([^`]*)`",
+								'cva\\((?:[^,]+),\\s*"(.*?)"',
+							},
+						},
+
+						validate = true, -- LSP에서 검사/자동완성 켜기
 					},
 				},
 			})
@@ -90,9 +170,14 @@ return {
 					},
 				},
 
+				hover = {
+					max_width = 80,
+					max_height = 30,
+				},
+
 				ui = {
+					border = "rounded",
 					lines = { "┗", "┣", "┃", "━", "┏" },
-					border = "single",
 					code_action = "💡",
 					action_fix = " ",
 					devicon = true,
