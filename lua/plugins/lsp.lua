@@ -150,7 +150,7 @@ return {
 				},
 			})
 
-			lspconfig.marksman.setup({})
+			-- lspconfig.marksman.setup({})
 		end,
 	},
 
