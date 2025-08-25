@@ -20,7 +20,6 @@ return {
 					ft = "trouble",
 					size = { height = 18 },
 					pinned = true,
-					open = "Trouble diagnostics open_no_results=true",
 				},
 			},
 		},

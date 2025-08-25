@@ -11,6 +11,13 @@ return {
 					},
 					opts = { skip = true },
 				},
+				{
+					filter = {
+						event = "notify",
+						find = "View is pinned and has no open function",
+					},
+					opts = { skip = true },
+				},
 			},
 			lsp = {
 				-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
