@@ -209,7 +209,7 @@ return {
 		event = "LspAttach",
 		config = function()
 			require("lspsaga").setup({
-				codeaction = {
+				code_action = {
 					options = {
 						winblend = 0,
 						border = "rounded",
@@ -221,10 +221,18 @@ return {
 					max_height = 30,
 				},
 
+				symbol_in_winbar = {
+					enable = false,
+				},
+
 				ui = {
+					diagnostic = {
+						border_style = "rounded",
+						border_follow = true,
+					},
 					border = "rounded",
 					lines = { "┗", "┣", "┃", "━", "┏" },
-					code_action = "💡",
+					code_action = "",
 					action_fix = " ",
 					devicon = true,
 					title = true,
@@ -235,21 +243,22 @@ return {
 					enable = true,
 					frequency = 7,
 				},
-				-- symbols_in_winbar = {
-				-- 	enable = true,
-				-- },
+
 				lightbulb = {
 					enable = true,
 					sign = true,
 					debounce = 10,
 				},
+
 				beacon = {
 					enable = true,
 				},
+
 				inlay_hint = {
 					enable = true,
 					separator = "  ",
 				},
+
 				diagnostic_signs = true,
 				hover_handler = "lspsaga",
 				signature_help_handler = "lspsaga",
