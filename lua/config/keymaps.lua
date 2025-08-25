@@ -24,7 +24,6 @@ mapKey("<leader>e", "<cmd>Neotree toggle<CR>", "n", { silent = true })
 mapKey("<leader>ccc", "<cmd>CccPick<CR>", "n", { silent = true })
 
 mapKey("F", ":bd<CR>")
-mapKey("<M-f>", ":bd!<CR>")
 mapKey("<C-q>", ":wa | qa!<CR>")
 
 -- vim.api.nvim_create_autocmd("LspAttach", {
