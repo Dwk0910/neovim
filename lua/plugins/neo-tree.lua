@@ -10,11 +10,32 @@ return {
 		lazy = false, -- neo-tree will lazily load itself
 		config = function()
 			require("neo-tree").setup({
+				container = {
+					enable_charactor_fade = true,
+				},
 				source_selector = {
 					winbar = false,
-					statusline = false,
+					statusline = true,
 				},
 				default_component_configs = {
+					indent = {
+						indent_size = 2,
+						padding = 1, -- extra padding on left hand side
+						-- indent guides
+						with_markers = true,
+						indent_marker = "│",
+						last_indent_marker = "└",
+						highlight = "NeoTreeIndentMarker",
+						-- expander config, needed for nesting files
+						with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
+						expander_collapsed = "",
+						expander_expanded = "",
+						expander_highlight = "NeoTreeExpander",
+					},
+					modified = {
+						symbol = "●",
+						highlight = "NeoTreeModified",
+					},
 					git_status = {
 						symbols = {
 							added = "",
@@ -38,6 +59,9 @@ return {
 					},
 				},
 			})
+
+			-- auto git status reload
+			require("neo-tree.sources.manager").refresh(require("neo-tree.sources.manager").get_state("filesystem"))
 		end,
 	},
 }

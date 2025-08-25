@@ -119,6 +119,8 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 })
 
 -- virtual_text & other warning/comment settings
+
+-- ** HIGHLIGHT GROUP CUSTOMIZATION **
 -- set virtualtext color
 vim.cmd([[
   highlight DiagnosticVirtualTextError guifg=#FF6E6E guibg=#3E1F1F
@@ -126,6 +128,13 @@ vim.cmd([[
   highlight DiagnosticVirtualTextInfo  guifg=#6EAFFF guibg=NONE
   highlight DiagnosticVirtualTextHint  guifg=#537199 guibg=NONE
 ]])
+-- set neotree colors
+vim.cmd([[
+    highlight NeoTreeIndentMarker guifg=#4E4E4E
+    highlight NeoTreeExpander guifg=#537199
+    highlight NeoTreeModified guifg=#FFD55F
+]])
+
 vim.diagnostic.config({
 	virtual_text = {
 		prefix = " ",
