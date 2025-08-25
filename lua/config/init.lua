@@ -89,28 +89,79 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 -- This allows to open `Trouble diagnostics` buffer automatically when current buffer has ERROR or WARN
-vim.api.nvim_create_autocmd("BufWritePost", {
-	callback = function(args)
-		local diagnostics = vim.diagnostic.get(args.buf)
-		local has_errors = false
-
-		for _, d in ipairs(diagnostics) do
-			if d.severity == vim.diagnostic.severity.ERROR or d.severity == vim.diagnostic.severity.WARN then
-				has_errors = true
-				break
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+	callback = function()
+		local function get_buffers_by_filetype(target_filetype)
+			local matching_buffers = {}
+			for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+				if vim.api.nvim_buf_is_loaded(bufnr) then
+					local filetype = vim.bo[bufnr].filetype
+					if filetype == target_filetype then
+						table.insert(matching_buffers, bufnr)
+					end
+				end
 			end
+			return matching_buffers
 		end
 
-		if has_errors then
-			local ok, trouble = pcall(require, "trouble")
-			if ok and not trouble.is_open() then
-				vim.cmd("Trouble diagnostics open")
+		if vim.bo.filetype ~= "" and vim.bo.buftype == "" then
+			local trouble_opened = false
+
+			local trouble_bufnrs = get_buffers_by_filetype("trouble")
+			for _, bufnr in ipairs(trouble_bufnrs) do
+				if vim.api.nvim_buf_is_loaded(bufnr) then
+					trouble_opened = true
+					break
+				end
+			end
+
+			local function open_trouble_screen()
+				vim.cmd([[Trouble diagnostics open_no_results=true filter.buf=0]])
+			end
+
+			if not trouble_opened then
+				open_trouble_screen()
+			else
+				for _, bufnr in ipairs(trouble_bufnrs) do
+					if vim.api.nvim_buf_is_loaded(bufnr) then
+						vim.api.nvim_buf_delete(bufnr, { force = true })
+					end
+				end
+				open_trouble_screen()
+			end
+		else
+			local trouble_bufnr = get_buffers_by_filetype("trouble")
+			for _, bufnr in ipairs(trouble_bufnr) do
+				if vim.api.nvim_buf_is_loaded(bufnr) then
+					vim.api.nvim_buf_delete(bufnr, { force = true })
+				end
 			end
 		end
 	end,
 })
 
--- This allows to detect markdown files that named with `*.md` or `*.markdown` and set filetype to `markdown`
+-- vim.api.nvim_create_autocmd("BufWritePost", {
+-- 	callback = function(args)
+-- 		local diagnostics = vim.diagnostic.get(args.buf)
+-- 		local has_errors = false
+--
+-- 		for _, d in ipairs(diagnostics) do
+-- 			if d.severity == vim.diagnostic.severity.ERROR or d.severity == vim.diagnostic.severity.WARN then
+-- 				has_errors = true
+-- 				break
+-- 			end
+-- 		end
+--
+-- 		if has_errors then
+-- 			local ok, trouble = pcall(require, "trouble")
+-- 			if ok and not trouble.is_open() then
+-- 				vim.cmd("Trouble diagnostics open")
+-- 			end
+-- 		end
+-- 	end,
+-- })
+
+-- This detects markdown files that named with `*.md` or `*.markdown` and set filetype to `markdown`
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	pattern = { "*.md", "*.markdown" },
 	callback = function()
@@ -172,6 +223,3 @@ vim.cmd([[
         autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
     augroup END
 ]])
-
--- Welcome Message
-require("notify")(" Welcome! ", "info", { title = "Set-up completed" })

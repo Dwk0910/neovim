@@ -9,7 +9,11 @@ return {
 					filter = { severity = vim.diagnostic.severity.WARN },
 				},
 			},
-			auto_close = true,
+			auto_preview = false,
+			use_diagnostic_signs = true,
+			fold_open = "",
+			fold_closed = "",
+			mode = "buffer_diagnostics",
 		})
 	end,
 }
