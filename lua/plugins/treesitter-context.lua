@@ -1,5 +1,3 @@
-local mapKey = require("utils.KeyMapper").mapKey
-
 return {
 	"nvim-treesitter/nvim-treesitter-context",
 	dependencies = {
