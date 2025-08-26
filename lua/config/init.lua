@@ -140,27 +140,6 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 	end,
 })
 
--- vim.api.nvim_create_autocmd("BufWritePost", {
--- 	callback = function(args)
--- 		local diagnostics = vim.diagnostic.get(args.buf)
--- 		local has_errors = false
---
--- 		for _, d in ipairs(diagnostics) do
--- 			if d.severity == vim.diagnostic.severity.ERROR or d.severity == vim.diagnostic.severity.WARN then
--- 				has_errors = true
--- 				break
--- 			end
--- 		end
---
--- 		if has_errors then
--- 			local ok, trouble = pcall(require, "trouble")
--- 			if ok and not trouble.is_open() then
--- 				vim.cmd("Trouble diagnostics open")
--- 			end
--- 		end
--- 	end,
--- })
-
 -- This detects markdown files that named with `*.md` or `*.markdown` and set filetype to `markdown`
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	pattern = { "*.md", "*.markdown" },
@@ -196,7 +175,7 @@ vim.diagnostic.config({
 		end,
 	},
 	underline = true,
-	update_in_insert = false,
+	update_in_insert = true,
 	severity_sort = true,
 	signs = {
 		text = {
@@ -217,9 +196,3 @@ vim.diagnostic.config({
 })
 
 vim.o.updatetime = 300
-vim.cmd([[
-    augroup ShowDiagnosticsOnHover
-        autocmd!
-        autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
-    augroup END
-]])
