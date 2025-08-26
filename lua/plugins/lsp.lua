@@ -232,7 +232,7 @@ return {
 					},
 					border = "rounded",
 					lines = { "┗", "┣", "┃", "━", "┏" },
-					code_action = "",
+					code_action = "",
 					action_fix = " ",
 					devicon = true,
 					title = true,
