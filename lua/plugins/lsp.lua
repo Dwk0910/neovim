@@ -209,31 +209,25 @@ return {
 		event = "LspAttach",
 		config = function()
 			require("lspsaga").setup({
-				code_action = {
-					options = {
-						winblend = 0,
-						border = "rounded",
-					},
-				},
-
 				hover = {
 					max_width = 80,
 					max_height = 30,
 				},
 
+				-- 코드 구조 표시 안함 (barbecue와 겹침)
 				symbol_in_winbar = {
 					enable = false,
 				},
 
+				diagnostic = {
+					extend_relatedInformation = true,
+					jump_num_shortcut = true,
+				},
+
 				ui = {
-					diagnostic = {
-						border_style = "rounded",
-						border_follow = true,
-					},
 					border = "rounded",
 					lines = { "┗", "┣", "┃", "━", "┏" },
-					code_action = "",
-					action_fix = " ",
+					action_fix = "",
 					devicon = true,
 					title = true,
 					expand = "⊞",

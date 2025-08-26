@@ -119,7 +119,7 @@ return {
 			javascript = "",
 			typescript = "",
 			tsx = "",
-			javascriptreact = "",
+			javascriptreact = "",
 			typescriptreact = "",
 			react = "",
 			html = "",
