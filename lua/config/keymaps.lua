@@ -37,6 +37,10 @@ mapKey("<C-q>", function()
 	end
 end)
 
+-- Move to next diagnostic item
+mapKey("J", "<cmd>Lspsaga diagnostic_jump_prev<CR>", "n", { silent = true })
+mapKey("K", "<cmd>Lspsaga diagnostic_jump_next<CR>", "n", { silent = true })
+
 -- vim.api.nvim_create_autocmd("LspAttach", {
 --     group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 --     callback = function(ev)
