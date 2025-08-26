@@ -1,9 +1,10 @@
+local mapKey = require("utils.KeyMapper").mapKey
+
 return {
 	"akinsho/toggleterm.nvim",
 	version = "*",
 	config = function()
 		require("toggleterm").setup({
-			open_mapping = [[C]],
 			direction = "float",
 			shell = "powershell",
 			float_opts = {
@@ -13,5 +14,7 @@ return {
 				title_pos = "center",
 			},
 		})
+
+		mapKey("C", "<cmd>ToggleTerm<CR>", "n", { noremap = true, silent = true })
 	end,
 }
