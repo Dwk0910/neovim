@@ -3,8 +3,8 @@ This repository contains my personal Neovim configuration files.<br/>
 It is tailored to my workflow and preferences, but you are welcome to use it as a starting point for your own setup.
 
 ### Screenshots
-![Screenshot 1](./.git/screenshots/screenshot_1.png)
-![Screenshot 2](./.git/screenshots/screenshot_2.png)
+![Screenshot 1](https://i.postimg.cc/3Rq3HJdW/screenshot-1.png)
+![Screenshot 2](https://i.postimg.cc/SRzkQFMd/screenshot-2.png)
 
 ### Installation
 1. **Backup Existing Configuration**: If you have an existing Neovim configuration, back it up to avoid losing your settings.
