@@ -6,7 +6,7 @@ return {
 	config = function()
 		require("toggleterm").setup({
 			direction = "float",
-			shell = "powershell",
+			shell = vim.o.shell,
 			float_opts = {
 				border = "curved",
 				width = 100,
