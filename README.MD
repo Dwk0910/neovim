@@ -66,6 +66,7 @@ nvim
 - Git
 - GitHub CLI
 - Node.js v20 or higher
+- Nerdfont v3
 
 ### Credits
 All configurations and plugins are credited to their respective authors.<br/>
