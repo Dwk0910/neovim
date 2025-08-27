@@ -39,7 +39,7 @@ nvim
 - **Markdown Preview**: Uses 'markdown-preview.nvim' for live markdown preview. So you can run `:MarkdownPreview` to preview markdown files in your browser. 
 - **Auto Pairs**: Automatically closes brackets, quotes, etc. with `nvim-autopairs`.
 - **Copilot AI**: Integrated GitHub Copilot for AI-assisted code completion.
-- **Floating Terminal**: Easily toggle a floating terminal within Neovim.
+- **Floating Terminal**: Easily toggle a floating terminal within Neovim. (Default terminal: `Powershell 7`)
 
 ### Customized key mappings
 - `Tab`: Go to next Tab
