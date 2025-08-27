@@ -65,7 +65,7 @@ nvim
 - Neovim 0.8 or higher
 - Git
 - GitHub CLI
-- Node.js (for some plugins)
+- Node.js v20 or higher
 
 ### Credits
 All configurations and plugins are credited to their respective authors.<br/>
