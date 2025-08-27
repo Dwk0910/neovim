@@ -27,3 +27,9 @@ opt.mouse:append("a")
 opt.laststatus = 3
 opt.splitkeep = "screen"
 opt.cursorline = true
+opt.shell = 'C:/"Program Files"/Powershell/7/pwsh.exe'
+opt.shellxquote = ""
+opt.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command "
+opt.shellquote = ""
+opt.shellpipe = "| Out-File -Encoding UTF8 %s"
+opt.shellredir = "| Out-File -Encoding UTF8 %s"
