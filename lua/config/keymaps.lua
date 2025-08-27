@@ -41,6 +41,13 @@ end)
 mapKey("J", "<cmd>Lspsaga diagnostic_jump_prev<CR>", "n", { silent = true })
 mapKey("K", "<cmd>Lspsaga diagnostic_jump_next<CR>", "n", { silent = true })
 
+mapKey("C", "<cmd>ToggleTerm<CR>", "n", { noremap = true, silent = true })
+mapKey("<Esc>", function()
+	if vim.api.nvim_get_mode().mode == "t" then
+		vim.cmd([[ToggleTerm<CR>]])
+	end
+end, "t", { noremap = true, silent = true })
+
 -- vim.api.nvim_create_autocmd("LspAttach", {
 --     group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 --     callback = function(ev)

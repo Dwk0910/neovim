@@ -1,5 +1,3 @@
-local mapKey = require("utils.KeyMapper").mapKey
-
 return {
 	"akinsho/toggleterm.nvim",
 	version = "*",
@@ -14,7 +12,5 @@ return {
 				title_pos = "center",
 			},
 		})
-
-		mapKey("C", "<cmd>ToggleTerm<CR>", "n", { noremap = true, silent = true })
 	end,
 }
