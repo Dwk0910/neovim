@@ -56,7 +56,23 @@ require("lazy").setup({
 	checker = { enabled = true, notify = true },
 })
 
--- Commands in `nvim_create_autocmd()` runs automatically when they are loaded.
+-- Commands in `nvim_create_autocmd("VimEnter", {})` runs automatically when they are loaded.
+
+-- Check updates
+local function augroup(name)
+	return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
+end
+
+vim.api.nvim_create_autocmd("VimEnter", {
+	group = augroup("autoupdate"),
+	callback = function()
+		require("lazy").update({
+			show = false,
+		})
+	end,
+})
+
+-- Set-up default layout
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function(_)
 		if vim.fn.argc() == 0 then
